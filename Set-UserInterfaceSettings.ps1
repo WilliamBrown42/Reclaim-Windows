@@ -1,6 +1,32 @@
-﻿##########
-# UI Tweaks
-##########
+﻿<#
+.Synopsis
+   Short description
+.DESCRIPTION
+   Long description
+.EXAMPLE
+   Example of how to use this cmdlet
+.EXAMPLE
+   Another example of how to use this cmdlet
+.INPUTS
+   Inputs to this cmdlet (if any)
+.OUTPUTS
+   Output from this cmdlet (if any)
+.NOTES
+   General notes
+.COMPONENT
+   The component this cmdlet belongs to
+.ROLE
+   The role this cmdlet belongs to
+.FUNCTIONALITY
+   The functionality that best describes this cmdlet
+#>
+[CmdletBinding()]Param(
+)
+
+Begin{
+}
+
+Process{
 
 # Disable Action Center
 # Write-Host "Disabling Action Center..."
@@ -177,3 +203,7 @@ Remove-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Explorer\MyCo
 # Remove secondary en-US keyboard
 # $langs = Get-WinUserLanguageList
 # Set-WinUserLanguageList ($langs | ? {$_.LanguageTag -ne "en-US"}) -Force
+}
+
+End{
+}

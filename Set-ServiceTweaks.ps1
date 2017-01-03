@@ -1,68 +1,97 @@
-﻿##########
-# Service Tweaks
-##########
+﻿<#
+.Synopsis
+   Short description
+.DESCRIPTION
+   Long description
+.EXAMPLE
+   Example of how to use this cmdlet
+.EXAMPLE
+   Another example of how to use this cmdlet
+.INPUTS
+   Inputs to this cmdlet (if any)
+.OUTPUTS
+   Output from this cmdlet (if any)
+.NOTES
+   General notes
+.COMPONENT
+   The component this cmdlet belongs to
+.ROLE
+   The role this cmdlet belongs to
+.FUNCTIONALITY
+   The functionality that best describes this cmdlet
+#>
+[CmdletBinding()]Param(
+)
 
-# Lower UAC level
-# Write-Host "Lowering UAC level..."
-# Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Type DWord -Value 0
-# Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop" -Type DWord -Value 0
+Begin{
+}
 
-# Raise UAC level
-# Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Type DWord -Value 5
-# Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop" -Type DWord -Value 1
+Process{
+    # Lower UAC level
+    Write-Output "Lowering UAC level..."
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Type DWord -Value 0
+    # Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop" -Type DWord -Value 0
 
-# Enable sharing mapped drives between users
-# Write-Host "Enabling sharing mapped drives between users..."
-# Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLinkedConnections" -Type DWord -Value 1
+    # Raise UAC level
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Type DWord -Value 5
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop" -Type DWord -Value 1
 
-# Disable sharing mapped drives between users
-# Remove-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLinkedConnections"
+    # Enable sharing mapped drives between users
+    Write-Output "Enabling sharing mapped drives between users..."
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLinkedConnections" -Type DWord -Value 1
 
-# Disable Firewall
-# Write-Host "Disabling Firewall..."
-# Set-NetFirewallProfile -Profile * -Enabled False
+    # Disable sharing mapped drives between users
+    Remove-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLinkedConnections"
 
-# Enable Firewall
-# Set-NetFirewallProfile -Profile * -Enabled True
+    # Disable Firewall
+    Write-Output "Disabling Firewall..."
+    Set-NetFirewallProfile -Profile * -Enabled False
 
-# Disable Windows Defender
-Write-Host "Disabling Windows Defender..."
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Type DWord -Value 1
+    # Enable Firewall
+    Set-NetFirewallProfile -Profile * -Enabled True
 
-# Enable Windows Defender
-# Remove-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware"
+    # Disable Windows Defender
+    Write-Output "Disabling Windows Defender..."
+    Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Type DWord -Value 1
 
-# Disable Windows Update automatic restart
-Write-Host "Disabling Windows Update automatic restart..."
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsUpdate\UX\Settings" -Name "UxOption" -Type DWord -Value 1
+    # Enable Windows Defender
+    Remove-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware"
 
-# Enable Windows Update automatic restart
-# Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsUpdate\UX\Settings" -Name "UxOption" -Type DWord -Value 0
+    # Disable Windows Update automatic restart
+    Write-Output "Disabling Windows Update automatic restart..."
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsUpdate\UX\Settings" -Name "UxOption" -Type DWord -Value 1
 
-# Stop and disable Home Groups services
-Write-Host "Stopping and disabling Home Groups services..."
-Stop-Service "HomeGroupListener"
-Set-Service "HomeGroupListener" -StartupType Disabled
-Stop-Service "HomeGroupProvider"
-Set-Service "HomeGroupProvider" -StartupType Disabled
+    # Enable Windows Update automatic restart
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsUpdate\UX\Settings" -Name "UxOption" -Type DWord -Value 0
 
-# Enable and start Home Groups services
-# Set-Service "HomeGroupListener" -StartupType Manual
-# Set-Service "HomeGroupProvider" -StartupType Manual
-# Start-Service "HomeGroupProvider"
+    # Stop and disable Home Groups services
+    Write-Output "Stopping and disabling Home Groups services..."
+    Stop-Service "HomeGroupListener"
+    Set-Service "HomeGroupListener" -StartupType Disabled
+    Stop-Service "HomeGroupProvider"
+    Set-Service "HomeGroupProvider" -StartupType Disabled
 
-# Disable Remote Assistance
-# Write-Host "Disabling Remote Assistance..."
-# Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Remote Assistance" -Name "fAllowToGetHelp" -Type DWord -Value 0
+    # Enable and start Home Groups services
+    Set-Service "HomeGroupListener" -StartupType Manual
+    Set-Service "HomeGroupProvider" -StartupType Manual
+    Start-Service "HomeGroupProvider"
 
-# Enable Remote Assistance
-# Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Remote Assistance" -Name "fAllowToGetHelp" -Type DWord -Value 1
+    # Disable Remote Assistance
+    Write-Output "Disabling Remote Assistance..."
+    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Remote Assistance" -Name "fAllowToGetHelp" -Type DWord -Value 0
 
-# Enable Remote Desktop w/o Network Level Authentication
-# Write-Host "Enabling Remote Desktop w/o Network Level Authentication..."
-# Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Type DWord -Value 0
-# Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Type DWord -Value 0
+    # Enable Remote Assistance
+    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Remote Assistance" -Name "fAllowToGetHelp" -Type DWord -Value 1
 
-# Disable Remote Desktop
-# Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Type DWord -Value 1
-# Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Type DWord -Value 1
+    # Enable Remote Desktop w/o Network Level Authentication
+    Write-Output "Enabling Remote Desktop w/o Network Level Authentication..."
+    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Type DWord -Value 0
+    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Type DWord -Value 0
+
+    # Disable Remote Desktop
+    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Type DWord -Value 1
+    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Type DWord -Value 1
+}
+
+End{
+}
