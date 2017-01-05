@@ -1,4 +1,6 @@
-﻿<#
+﻿# Add increment value for percent complete in write progress
+
+<#
 .Synopsis
    Short description
 .DESCRIPTION
@@ -21,87 +23,113 @@
    The functionality that best describes this cmdlet
 #>
 [CmdletBinding()]Param(
+        [switch]$OneDrive
 )
 
+<#
+#>
 Begin{
+# Test for permissions
 # Grab input / need to make the params 
+# Put interactive part in begin
+# $APP 
+# ENABLE
+# DISABLE
+# INSTALL 
+# UNINSTALL
 }
     
 Process{
     if ($OneDrive){
-        # Disable OneDrive
-        Write-Output "Disabling OneDrive..."
-        If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive")) {
-        New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" | Out-Null
+        switch ($OneDrive.state){
+            "install" {
+                # This should test to see if it is already installed?
+                # Install OneDrive
+                $onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
+                If (!(Test-Path $onedrive)) {
+                    $onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
+                }
+            }
+            "uninstall" {
+                # Uninstall OneDrive
+                Write-Progress -Activity "Uninstalling OneDrive..." `
+                               -PercentComplete  $PercentComplete `
+                               -CurrentOperation "$PercentComplete% Complete" `
+                               -Status "Please Wait..."
+                Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
+                Start-Sleep -s 3
+                $onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
+                If (!(Test-Path $onedrive)) {
+                    $onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
+                }
+                Start-Process $onedrive "/uninstall" -NoNewWindow -Wait
+                Start-Sleep -s 3
+                Stop-Process -Name explorer -ErrorAction SilentlyContinue
+                Start-Sleep -s 3
+                Remove-Item "$env:USERPROFILE\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
+                Remove-Item "$env:LOCALAPPDATA\Microsoft\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
+                Remove-Item "$env:PROGRAMDATA\Microsoft OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
+                If (Test-Path "$env:SYSTEMDRIVE\OneDriveTemp") {
+                    Remove-Item "$env:SYSTEMDRIVE\OneDriveTemp" -Force -Recurse -ErrorAction SilentlyContinue
+                }
+                If (!(Test-Path "HKCR:")) {
+                    New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+                }
+                Remove-Item -Path "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue
+                Remove-Item -Path "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue
+                }
+            "enable" {
+                # Enable OneDrive
+                Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC"
+                Start-Process $onedrive -NoNewWindow
+            }
+            "disable" {
+                # Disable OneDrive
+                Write-Progress -Activity "Disabling OneDrive..." `
+                               -PercentComplete  $PercentComplete `
+                               -CurrentOperation "$PercentComplete% Complete" `
+                               -Status "Please Wait..."
+                
+                If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive")) {
+                    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" | Out-Null
+                }
+                Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Type DWord -Value 1
+            }
         }
-        Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Type DWord -Value 1
-
-        # Enable OneDrive
-        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC"
-
-        # Uninstall OneDrive
-        Write-Output "Uninstalling OneDrive..."
-        Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
-        Start-Sleep -s 3
-        $onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
-        If (!(Test-Path $onedrive)) {
-        $onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
-        }
-        Start-Process $onedrive "/uninstall" -NoNewWindow -Wait
-        Start-Sleep -s 3
-        Stop-Process -Name explorer -ErrorAction SilentlyContinue
-        Start-Sleep -s 3
-        Remove-Item "$env:USERPROFILE\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
-        Remove-Item "$env:LOCALAPPDATA\Microsoft\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
-        Remove-Item "$env:PROGRAMDATA\Microsoft OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
-        If (Test-Path "$env:SYSTEMDRIVE\OneDriveTemp") {
-        Remove-Item "$env:SYSTEMDRIVE\OneDriveTemp" -Force -Recurse -ErrorAction SilentlyContinue
-        }
-        If (!(Test-Path "HKCR:")) {
-        New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
-        }
-        Remove-Item -Path "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue
-        Remove-Item -Path "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue
-
-        # Install OneDrive
-        $onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
-        If (!(Test-Path $onedrive)) {
-        $onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
-        }
-        Start-Process $onedrive -NoNewWindow
+       
     }
 
+    # The logic for this might need some explaining, that being enable will install it if it is not and so on and so forth. 
+    foreach ($APP in $STUFF){
+        switch ($APP.state){
+            "UNINSTALL" { 
+            # increment percent 
+            Write-Progress -Activity "Removing $($APP.name)" `
+                   -PercentComplete  $PercentComplete `
+                   -CurrentOperation "$PercentComplete% Complete" `
+                   -Status "Please Wait..." 
+            Get-AppxPackage "$($APP.NAME)" | Remove-AppxPackage }
+            "install" {
+            # Test if already installed? 
+            # Install if not
+            # enable?
+            }
+            "enable" {
+            # Test if installed 
+            # If not install
+            # enable
+            }
+            "disable" {
+            # Disable
+            }
+            
+        }
+    }
     
     # Uninstall default Microsoft applications
-    Write-Output "Uninstalling default Microsoft applications..."
-    Get-AppxPackage "Microsoft.3DBuilder" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.BingFinance" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.BingNews" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.BingSports" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.BingWeather" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.Getstarted" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.MicrosoftOfficeHub" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.MicrosoftSolitaireCollection" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.Office.OneNote" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.People" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.SkypeApp" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.Windows.Photos" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.WindowsAlarms" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.WindowsCamera" | Remove-AppxPackage
-    Get-AppxPackage "microsoft.windowscommunicationsapps" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.WindowsMaps" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.WindowsPhone" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.WindowsSoundRecorder" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.XboxApp" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.ZuneMusic" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.ZuneVideo" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.AppConnector" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.ConnectivityStore" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.Office.Sway" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.Messaging" | Remove-AppxPackage
-    Get-AppxPackage "Microsoft.CommsPhone" | Remove-AppxPackage
-    Get-AppxPackage "9E2F88E3.Twitter" | Remove-AppxPackage
-    Get-AppxPackage "king.com.CandyCrushSodaSaga" | Remove-AppxPackage
+    # Look up how to do switches here. Fuck switches, foreach loop with if statement / PSObject
+    
+    
 
     # Install default Microsoft applications
     Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.3DBuilder").InstallLocation)\AppXManifest.xml"
@@ -178,7 +206,7 @@ Process{
     # Show Photo Viewer in "Open with..."
     Write-Output "Showing Photo Viewer in `"Open with...`""
     If (!(Test-Path "HKCR:")) {
-    New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+        New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
     }
     New-Item -Path "HKCR:\Applications\photoviewer.dll\shell\open\command" -Force | Out-Null
     New-Item -Path "HKCR:\Applications\photoviewer.dll\shell\open\DropTarget" -Force | Out-Null
@@ -188,7 +216,7 @@ Process{
 
     Remove Photo Viewer from "Open with..."
     If (!(Test-Path "HKCR:")) {
-    New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+        New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
     }
     Remove-Item -Path "HKCR:\Applications\photoviewer.dll\shell\open" -Recurse
 }
