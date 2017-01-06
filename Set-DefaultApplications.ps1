@@ -40,6 +40,7 @@ Begin{
 }
     
 Process{
+    # All of the code for this I need to look at and figure out what it does before making significant changes.
     if ($OneDrive){
         switch ($OneDrive.state){
             "install" {
@@ -95,75 +96,37 @@ Process{
                 }
                 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Type DWord -Value 1
             }
-        }
-       
+        } 
     }
 
     # The logic for this might need some explaining, that being enable will install it if it is not and so on and so forth. 
     foreach ($APP in $STUFF){
         switch ($APP.state){
-            "UNINSTALL" { 
-            # increment percent 
-            Write-Progress -Activity "Removing $($APP.name)" `
-                   -PercentComplete  $PercentComplete `
-                   -CurrentOperation "$PercentComplete% Complete" `
-                   -Status "Please Wait..." 
-            Get-AppxPackage "$($APP.NAME)" | Remove-AppxPackage }
+            "uninstall" { 
+                # increment percent 
+                Write-Progress -Activity "Uninstalling $($APP.name)" `
+                               -PercentComplete  $PercentComplete `
+                               -CurrentOperation "$PercentComplete% Complete" `
+                               -Status "Please Wait..." 
+                Get-AppxPackage "$($APP.NAME)" | Remove-AppxPackage 
+            }
             "install" {
-            # Test if already installed? 
-            # Install if not
-            # enable?
+                Write-Progress -Activity "Installing $($APP.name)" `
+                               -PercentComplete  $PercentComplete `
+                               -CurrentOperation "$PercentComplete% Complete" `
+                               -Status "Please Wait..." 
+                # Need to look at what this does a little closer.
+                Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "$($APP.name)").InstallLocation)\AppXManifest.xml"
+                # Test if already installed? 
+                # Install if not
+                # enable?
             }
-            "enable" {
-            # Test if installed 
-            # If not install
-            # enable
-            }
-            "disable" {
-            # Disable
-            }
-            
-        }
+       }
     }
     
     # Uninstall default Microsoft applications
-    # Look up how to do switches here. Fuck switches, foreach loop with if statement / PSObject
     
     
-
-    # Install default Microsoft applications
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.3DBuilder").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.BingFinance").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.BingNews").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.BingSports").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.BingWeather").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.Getstarted").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.MicrosoftOfficeHub").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.MicrosoftSolitaireCollection").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.Office.OneNote").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.People").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.SkypeApp").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.Windows.Photos").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.WindowsAlarms").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.WindowsCamera").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.windowscommunicationsapps").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.WindowsMaps").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.WindowsPhone").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.WindowsSoundRecorder").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.XboxApp").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.ZuneMusic").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.ZuneVideo").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.AppConnector").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.ConnectivityStore").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.Office.Sway").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.Messaging").InstallLocation)\AppXManifest.xml"
-    Add-AppxPackage -DisableDevelopmentMode -Register "$($(Get-AppXPackage -AllUsers "Microsoft.CommsPhone").InstallLocation)\AppXManifest.xml"
-    # In case you have removed them for good, you can try to restore the files using installation medium as follows
-    New-Item C:\Mnt -Type Directory | Out-Null
-    dism /Mount-Image /ImageFile:D:\sources\install.wim /index:1 /ReadOnly /MountDir:C:\Mnt
-    robocopy /S /SEC /R:0 "C:\Mnt\Program Files\WindowsApps" "C:\Program Files\WindowsApps"
-    dism /Unmount-Image /Discard /MountDir:C:\Mnt
-    Remove-Item -Path C:\Mnt -Recurse
 
     # Uninstall Windows Media Player
     Write-Output "Uninstalling Windows Media Player..."
