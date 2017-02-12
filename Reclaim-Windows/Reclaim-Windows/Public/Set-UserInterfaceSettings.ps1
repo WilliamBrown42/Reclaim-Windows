@@ -31,7 +31,7 @@ Begin{
 }
 
 Process{
-
+    
     # Disable Action Center
     Write-Output "Disabling Action Center..."
     If (!(Test-Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer")) {

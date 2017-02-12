@@ -1,0 +1,21 @@
+Original list by https://thomas.vanhoutte.be/miniblog/delete-windows-10-apps/
+Expanded to remove *all* 'Modern/Metro' apps.
+
+Paste all at once into Powershell, or just the ones you want to remove:
+
+Get-AppxPackage *3d* | Remove-AppxPackage
+Get-AppxPackage *alarms* | Remove-AppxPackage
+Get-AppxPackage *bing* | Remove-AppxPackage
+Get-AppxPackage *calc* | Remove-AppxPackage
+Get-AppxPackage *camera* | Remove-AppxPackage
+Get-AppxPackage *communi* | Remove-AppxPackage
+Get-AppxPackage *maps* | Remove-AppxPackage
+Get-AppxPackage *note* | Remove-AppxPackage
+Get-AppxPackage *people* | Remove-AppxPackage
+Get-AppxPackage *phone* | Remove-AppxPackage
+Get-AppxPackage *photo* | Remove-AppxPackage
+Get-AppxPackage *solit* | Remove-AppxPackage
+Get-AppxPackage *soundrec* | Remove-AppxPackage
+Get-AppxPackage *store* | Remove-AppxPackage
+Get-AppxPackage *xbox* | Remove-AppxPackage
+Get-AppxPackage *zune* | Remove-AppxPackage

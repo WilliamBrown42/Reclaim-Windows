@@ -123,10 +123,6 @@ Process{
             }
        }
     }
-    
-    # Uninstall default Microsoft applications
-    
-    
 
     # Uninstall Windows Media Player
     Write-Output "Uninstalling Windows Media Player..."
@@ -156,7 +152,7 @@ Process{
 
     # Remove or reset default open action for bmp, gif, jpg and png
     If (!(Test-Path "HKCR:")) {
-    New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+        New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
     }
     Remove-Item -Path "HKCR:\Paint.Picture\shell\open" -Recurse
     Remove-ItemProperty -Path "HKCR:\giffile\shell\open" -Name "MuiVerb"
