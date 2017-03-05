@@ -1,0 +1,179 @@
+URLs/IPs found by @EveningStarNM, @bartblaze, and Microsoft Engineer !JeCZI7VUg2
+Merged into one alphabetical list, removed duplicates, null-routed IPv4 and IPv6.
+
+-------------------------------------------
+
+Info by bartblaze:
+
+For a guide on how to disable several telemetry options already, visit this website: http://arstechnica.com/information-technology/2015/08/windows-10-doesnt-offer-much-privacy-by-default-heres-how-to-fix-it/
+Another resource is available at: https://fix10.isleaked.com/
+
+Certain Windows updates in Windows 10 deliver extra "options" for telemetry on your machine. It is advisable to uninstall them: http://www.kernelmode.info/forum/viewtopic.php?f=11&t=4001
+
+For additional privacy, you can add these entries to your hosts file, which is located in: C:\Windows\system32\drivers\etc
+
+You can edit and save the file by opening Notepad as Administrator (Press Windows key ("flag" icon), in the search bar enter "notepad", right-click on notepad and choose Run as Administrator - then browse to the hosts file location).
+
+Note: this does NOT block any Windows Updates.
+
+-------------------------------------------
+
+Info by EveningStarNM:
+
+NOTE: This is not all you must do to protect yourself from Microsoft's data harvesting in Windows 10. There are many settings in Windows and various apps and applications that you must also configure. You can find some good guides by searching the internet.
+
+Add these lines to HOSTS to block known Microsoft telemetry sites used by Windows 10 (v3.1)
+
+For instructions on how to edit the HOSTS file in Windows 10, see: https://www.petri.com/easily-edit-hosts-file-windows-10
+
+-------------------------------------------
+
+Advice by simplypeachy:
+
+Consequences of blocking some host names: https://github.com/10se1ucgo/DisableWinTracking/issues/22
+
+-------------------------------------------
+HOSTS Entries To Block Windows 10 Telemetry
+-------------------------------------------
+
+0.0.0.0 a-0001.a-msedge.net
+0.0.0.0 a-0002.a-msedge.net
+0.0.0.0 a-0003.a-msedge.net
+0.0.0.0 a-0004.a-msedge.net
+0.0.0.0 a-0005.a-msedge.net
+0.0.0.0 a-0006.a-msedge.net
+0.0.0.0 a-0007.a-msedge.net
+0.0.0.0 a-0008.a-msedge.net
+0.0.0.0 a-0009.a-msedge.net
+0.0.0.0 a-msedge.net
+0.0.0.0 a.ads1.msn.com
+0.0.0.0 a.ads2.msn.com
+0.0.0.0 ad.doubleclick.net
+0.0.0.0 adnexus.net
+0.0.0.0 adnxs.com
+0.0.0.0 ads.msn.com
+0.0.0.0 ads1.msads.net
+0.0.0.0 ads1.msn.com
+0.0.0.0 az361816.vo.msecnd.net
+0.0.0.0 az512334.vo.msecnd.net
+0.0.0.0 choice.microsoft.com
+0.0.0.0 choice.microsoft.com.nsatc.net
+0.0.0.0 compatexchange.cloudapp.net
+0.0.0.0 corp.sts.microsoft.com
+0.0.0.0 corpext.msitadfs.glbdns2.microsoft.com
+0.0.0.0 cs1.wpc.v0cdn.net
+0.0.0.0 df.telemetry.microsoft.com
+0.0.0.0 diagnostics.support.microsoft.com
+0.0.0.0 fe1.update.microsoft.com.akadns.net
+0.0.0.0 fe2.update.microsoft.com.akadns.net
+0.0.0.0 feedback.microsoft-hohm.com
+0.0.0.0 feedback.search.microsoft.com
+0.0.0.0 feedback.windows.com
+0.0.0.0 i1.services.social.microsoft.com
+0.0.0.0 i1.services.social.microsoft.com.nsatc.net
+0.0.0.0 msedge.net
+0.0.0.0 oca.telemetry.microsoft.com
+0.0.0.0 oca.telemetry.microsoft.com.nsatc.net
+0.0.0.0 pre.footprintpredict.com
+0.0.0.0 preview.msn.com
+0.0.0.0 rad.msn.com
+0.0.0.0 redir.metaservices.microsoft.com
+0.0.0.0 reports.wes.df.telemetry.microsoft.com
+0.0.0.0 services.wes.df.telemetry.microsoft.com
+0.0.0.0 settings-sandbox.data.microsoft.com
+0.0.0.0 sls.update.microsoft.com.akadns.net
+0.0.0.0 sqm.df.telemetry.microsoft.com
+0.0.0.0 sqm.telemetry.microsoft.com
+0.0.0.0 sqm.telemetry.microsoft.com.nsatc.net
+0.0.0.0 statsfe1.update.microsoft.com.akadns.net
+0.0.0.0 statsfe1.ws.microsoft.com
+0.0.0.0 statsfe2.update.microsoft.com.akadns.net
+0.0.0.0 statsfe2.ws.microsoft.com
+0.0.0.0 survey.watson.microsoft.com
+0.0.0.0 telecommand.telemetry.microsoft.com
+0.0.0.0 telecommand.telemetry.microsoft.com.nsatc.net
+0.0.0.0 telemetry.appex.bing.net
+0.0.0.0 telemetry.appex.bing.net:443
+0.0.0.0 telemetry.microsoft.com
+0.0.0.0 telemetry.urs.microsoft.com
+0.0.0.0 vortex-sandbox.data.microsoft.com
+0.0.0.0 vortex-win.data.microsoft.com
+0.0.0.0 vortex.data.microsoft.com
+0.0.0.0 watson.live.com
+0.0.0.0 watson.microsoft.com
+0.0.0.0 watson.ppe.telemetry.microsoft.com
+0.0.0.0 watson.telemetry.microsoft.com
+0.0.0.0 watson.telemetry.microsoft.com.nsatc.net
+0.0.0.0 wes.df.telemetry.microsoft.com
+0.0.0.0 www.msftncsi.com
+
+:: a-0001.a-msedge.net
+:: a-0002.a-msedge.net
+:: a-0003.a-msedge.net
+:: a-0004.a-msedge.net
+:: a-0005.a-msedge.net
+:: a-0006.a-msedge.net
+:: a-0007.a-msedge.net
+:: a-0008.a-msedge.net
+:: a-0009.a-msedge.net
+:: a-msedge.net
+:: a.ads1.msn.com
+:: a.ads2.msn.com
+:: ad.doubleclick.net
+:: adnexus.net
+:: adnxs.com
+:: ads.msn.com
+:: ads1.msads.net
+:: ads1.msn.com
+:: az361816.vo.msecnd.net
+:: az512334.vo.msecnd.net
+:: choice.microsoft.com
+:: choice.microsoft.com.nsatc.net
+:: compatexchange.cloudapp.net
+:: corp.sts.microsoft.com
+:: corpext.msitadfs.glbdns2.microsoft.com
+:: cs1.wpc.v0cdn.net
+:: df.telemetry.microsoft.com
+:: diagnostics.support.microsoft.com
+:: fe1.update.microsoft.com.akadns.net
+:: fe2.update.microsoft.com.akadns.net
+:: feedback.microsoft-hohm.com
+:: feedback.search.microsoft.com
+:: feedback.windows.com
+:: i1.services.social.microsoft.com
+:: i1.services.social.microsoft.com.nsatc.net
+:: msedge.net
+:: oca.telemetry.microsoft.com
+:: oca.telemetry.microsoft.com.nsatc.net
+:: pre.footprintpredict.com
+:: preview.msn.com
+:: rad.msn.com
+:: redir.metaservices.microsoft.com
+:: reports.wes.df.telemetry.microsoft.com
+:: services.wes.df.telemetry.microsoft.com
+:: settings-sandbox.data.microsoft.com
+:: sls.update.microsoft.com.akadns.net
+:: sqm.df.telemetry.microsoft.com
+:: sqm.telemetry.microsoft.com
+:: sqm.telemetry.microsoft.com.nsatc.net
+:: statsfe1.update.microsoft.com.akadns.net
+:: statsfe1.ws.microsoft.com
+:: statsfe2.update.microsoft.com.akadns.net
+:: statsfe2.ws.microsoft.com
+:: survey.watson.microsoft.com
+:: telecommand.telemetry.microsoft.com
+:: telecommand.telemetry.microsoft.com.nsatc.net
+:: telemetry.appex.bing.net
+:: telemetry.appex.bing.net:443
+:: telemetry.microsoft.com
+:: telemetry.urs.microsoft.com
+:: vortex-sandbox.data.microsoft.com
+:: vortex-win.data.microsoft.com
+:: vortex.data.microsoft.com
+:: watson.live.com
+:: watson.microsoft.com
+:: watson.ppe.telemetry.microsoft.com
+:: watson.telemetry.microsoft.com
+:: watson.telemetry.microsoft.com.nsatc.net
+:: wes.df.telemetry.microsoft.com
+:: www.msftncsi.com
