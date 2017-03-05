@@ -23,61 +23,10 @@
 [CmdletBinding()]Param(
 )
 
-Begin{
-# DISABLE/ENABLE
-# SHOW/HIDE
-# SET
-# REMOVE/ADD
-}
+Begin{}
 
 Process{
-    
-    # Disable Action Center
-    Write-Output "Disabling Action Center..."
-    If (!(Test-Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer")) {
-    New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" | Out-Null
-    }
-    Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name "DisableNotificationCenter" -Type DWord -Value 1
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications" -Name "ToastEnabled" -Type DWord -Value 0
-
-    # Enable Action Center
-    Remove-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name "DisableNotificationCenter"
-    Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications" -Name "ToastEnabled"
-
-    # Disable Lock screen
-    Write-Output "Disabling Lock screen..."
-    If (!(Test-Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization")) {
-    New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" | Out-Null
-    }
-    Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Name "NoLockScreen" -Type DWord -Value 1
-
-    # Enable Lock screen
-    Remove-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Name "NoLockScreen"
-
-    # Disable Autoplay
-    Write-Output "Disabling Autoplay..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" -Name "DisableAutoplay" -Type DWord -Value 1
-
-    # Enable Autoplay
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" -Name "DisableAutoplay" -Type DWord -Value 0
-
-    # Disable Autorun for all drives
-    Write-Output "Disabling Autorun for all drives..."
-    If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer")) {
-    New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" | Out-Null
-    }
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Type DWord -Value 255
-
-    # Enable Autorun
-    Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun"
-
-    # Disable Sticky keys prompt
-    Write-Output "Disabling Sticky keys prompt..."
-    Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name "Flags" -Type String -Value "506"
-
-    # Enable Sticky keys prompt
-    Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name "Flags" -Type String -Value "510"
-
+   
     # Hide Search button / box
     Write-Output "Hiding Search Box / Button..."
     Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 0

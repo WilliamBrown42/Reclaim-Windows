@@ -19,5 +19,5 @@ Write-Output @"
 ###############################################################################
 "@
 $DesktopPath = [Environment]::GetFolderPath("Desktop");
-# New-Item -Name ""$DesktopPath\GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}" -ItemType directory
-mkdir "$DesktopPath\GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}"
+New-Item -Name "$DesktopPath\GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}" -ItemType directory
+# mkdir "$DesktopPath\GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}"
